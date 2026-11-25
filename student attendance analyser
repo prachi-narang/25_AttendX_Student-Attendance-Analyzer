@@ -26,7 +26,7 @@ int main()
 
     printf("===== STUDENT ATTENDANCE ANALYZER =====\n\n");
 
-    /* Input validation for number of students */
+ /* Input validation for number of students */
     do
     {
         printf("Enter number of students (1-10): ");
