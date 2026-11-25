@@ -1,0 +1,204 @@
+#include <stdio.h>
+#include <string.h>
+
+#define MAX_STUDENTS 10
+#define MIN_ATTENDANCE 75.0
+
+struct Student
+{
+    char name[50];
+    int totalClasses;
+    int attendedClasses;
+    float attendancePercentage;
+};
+
+void enterStudentDetails(struct Student students[], int n);
+void displayStudentAttendance(struct Student students[], int n);
+void displayClassReport(struct Student students[], int n);
+
+int main()
+{
+    struct Student students[MAX_STUDENTS];
+    int n, choice;
+    int dataEntered = 0;
+
+    printf("===== STUDENT ATTENDANCE ANALYZER =====\n\n");
+
+    /* Input validation for number of students */
+    do
+    {
+        printf("Enter number of students (1-10): ");
+        scanf("%d", &n);
+
+        if (n < 1 || n > 10)
+        {
+            printf("Invalid input! Please enter a number between 1 and 10.\n");
+        }
+
+    } while (n < 1 || n > 10);
+
+    do
+    {
+        printf("\n===== MENU =====\n");
+        printf("1. Enter Student Details\n");
+        printf("2. Display Student Attendance\n");
+        printf("3. Display Class Report\n");
+        printf("4. Exit\n");
+
+        printf("\nEnter your choice: ");
+        scanf("%d", &choice);
+
+        switch (choice)
+        {
+            case 1:
+                enterStudentDetails(students, n);
+                dataEntered = 1;
+                break;
+
+            case 2:
+                if (dataEntered)
+                {
+                    displayStudentAttendance(students, n);
+                }
+                else
+                {
+                    printf("\nPlease enter student details first!\n");
+                }
+                break;
+
+            case 3:
+                if (dataEntered)
+                {
+                    displayClassReport(students, n);
+                }
+                else
+                {
+                    printf("\nPlease enter student details first!\n");
+                }
+                break;
+
+            case 4:
+                printf("\nExiting program..\n");
+                break;
+
+            default:
+                printf("\nInvalid choice! Please enter a number between 1 and 4.\n");
+        }
+
+    } while (choice != 4);
+
+    return 0;
+}
+
+
+/* Function to enter student details */
+void enterStudentDetails(struct Student students[], int n)
+{
+    int i;
+
+    for (i = 0; i < n; i++)
+    {
+        printf("\nEnter name of student %d: ", i + 1);
+        scanf(" %[^\n]", students[i].name);
+
+        /* Validation for total classes */
+        do
+        {
+            printf("Enter total number of classes: ");
+            scanf("%d", &students[i].totalClasses);
+
+            if (students[i].totalClasses <= 0)
+            {
+                printf("Total classes must be greater than 0!\n");
+            }
+
+        } while (students[i].totalClasses <= 0);
+
+        /* Validation for attended classes */
+        do
+        {
+            printf("Enter number of classes attended: ");
+            scanf("%d", &students[i].attendedClasses);
+
+            if (students[i].attendedClasses < 0 ||
+                students[i].attendedClasses > students[i].totalClasses)
+            {
+                printf("Invalid attendance! Classes attended must be between 0 and %d.\n",
+                       students[i].totalClasses);
+            }
+
+        } while (students[i].attendedClasses < 0 ||
+                 students[i].attendedClasses > students[i].totalClasses);
+
+        /* Calculate attendance percentage */
+        students[i].attendancePercentage =
+            ((float)students[i].attendedClasses /
+             students[i].totalClasses) * 100;
+    }
+
+    printf("\nStudent data entered successfully!\n");
+}
+
+
+/* Function to display attendance of all students */
+void displayStudentAttendance(struct Student students[], int n)
+{
+    int i;
+
+    printf("\n===== STUDENT ATTENDANCE =====\n");
+
+    for (i = 0; i < n; i++)
+    {
+        printf("\nName: %s\n", students[i].name);
+
+        printf("Classes Attended: %d / %d\n",
+               students[i].attendedClasses,
+               students[i].totalClasses);
+
+        printf("Attendance Percentage: %.2f%%\n",
+               students[i].attendancePercentage);
+
+        if (students[i].attendancePercentage >= MIN_ATTENDANCE)
+        {
+            printf("STATUS = SUFFICIENT ATTENDANCE\n");
+        }
+        else
+        {
+            printf("STATUS = LOW ATTENDANCE\n");
+        }
+    }
+}
+
+
+/* Function to display class report */
+void displayClassReport(struct Student students[], int n)
+{
+    int i;
+    int highestIndex = 0;
+    float totalPercentage = 0.0;
+    float classAverage;
+
+    for (i = 0; i < n; i++)
+    {
+        totalPercentage += students[i].attendancePercentage;
+
+        if (students[i].attendancePercentage >
+            students[highestIndex].attendancePercentage)
+        {
+            highestIndex = i;
+        }
+    }
+
+    classAverage = totalPercentage / n;
+
+    printf("\n===== CLASS REPORT =====\n");
+
+    printf("\nHighest Attendance: %s\n",
+           students[highestIndex].name);
+
+    printf("Highest Attendance Percentage: %.2f%%\n",
+           students[highestIndex].attendancePercentage);
+
+    printf("Class Average Attendance: %.2f%%\n",
+           classAverage);
+}
