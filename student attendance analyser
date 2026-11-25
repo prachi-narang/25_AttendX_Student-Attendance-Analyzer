@@ -1,3 +1,4 @@
+/*Student 1:- PRACHI*/
 #include <stdio.h>
 #include <string.h>
 
@@ -90,6 +91,7 @@ int main()
     return 0;
 }
 
+/*Student 2:- DEVESH*/
 
 /* Function to enter student details */
 void enterStudentDetails(struct Student students[], int n)
@@ -169,6 +171,7 @@ void displayStudentAttendance(struct Student students[], int n)
     }
 }
 
+/*Student 3:- SUKHPREET*/
 
 /* Function to display class report */
 void displayClassReport(struct Student students[], int n)
